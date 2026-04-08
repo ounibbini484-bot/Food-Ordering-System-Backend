@@ -1,6 +1,10 @@
-import http, { request } from 'http';
-const server=http.createServer((req,res)=>{
-    res.write("Hello im server ");
-    res.end();
-})
-server.listen(8081)
+const express = require('express');
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('Hello from backend!');
+});
+
+app.listen(3000, () => {
+  console.log('Server running on port 3000');
+});
