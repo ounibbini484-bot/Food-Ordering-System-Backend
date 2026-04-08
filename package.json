@@ -1,0 +1,12 @@
+{
+  "name": "9-food-order-syeterm---ouns-backend",
+  "version": "1.0.0",
+  "description": "this will be back end of food order App",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
