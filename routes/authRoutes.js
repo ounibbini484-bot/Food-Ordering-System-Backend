@@ -1,6 +1,7 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import User from "../models/User.js";
+import jwt from "jsonwebtoken"
 
 const router = express.Router();
 
@@ -26,6 +27,7 @@ router.post("/signup", async(request, response) =>{
       const hashedPassword = await bcrypt.hash(password,10);
 
       const newUser = await User.create({name, email, password:hashedPassword});
+
    
 
       response.status(201).json({
@@ -71,9 +73,16 @@ router.post("/login", async(request, response)=>{
         })
       }
 
+      const token = jwt.sign(
+        {email: user.email, id: user.id},
+        process.env.JWT_SECRET || "testSecret",
+        {expiresIn: "1h"}
+      );
+
       response.status(200).json({
-        message:"User sign in successfully",
+        message:"User sign in successfull",
         email: user.email,
+        token: token
       });
     }
     catch(error){
