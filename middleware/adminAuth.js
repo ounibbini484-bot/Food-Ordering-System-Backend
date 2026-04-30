@@ -7,10 +7,10 @@ const adminAuth = async (req, res, next) => {
             return res.status(401).json({message: "Unauthorized"});
         }
 
-        const user = await User.findOne(req.userId);
+        const user = await User.findById(req.userId);
 
         if(!user || !user.isAdmin){
-            return res.status(403).json({message: "Access denied"});
+            return res.status(403).json({message: "Access denied", user: user});
         }
 
         next();
