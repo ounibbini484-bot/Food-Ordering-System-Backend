@@ -46,4 +46,29 @@ router.post("/", auth, adminAuth, async(req, res) =>{
     }
 });
 
+// Delete a food item [only an admin should be allowed to delete a food item]
+router.delete("/:foodId", auth, adminAuth, async(req, res) => {
+    try {
+        const { foodId } = req.params;
+        
+        let deletedFood;
+        // Check if foodId is a valid MongoDB ObjectId
+        if (foodId.match(/^[0-9a-fA-F]{24}$/)) {
+            deletedFood = await Food.findByIdAndDelete(foodId);
+        } else {
+            // Try deleting by custom numeric id
+            deletedFood = await Food.findOneAndDelete({ id: Number(foodId) });
+        }
+
+        if (!deletedFood) {
+            return res.status(404).json({ message: "Food item not found" });
+        }
+
+        res.status(200).json({ message: "Food item deleted successfully", food: deletedFood });
+    } catch (error) {
+        console.error("Delete Food Error", error);
+        res.status(500).json({ message: "Something went wrong while deleting the food item" });
+    }
+});
+
 export default router
